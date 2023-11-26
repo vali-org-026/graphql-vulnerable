@@ -1,3 +1,9 @@
+provider "aws" {
+  access_key = "ASIAZG5Y3JXC5UQKAJ8Y"
+  secret_key = "KsOuKcmeGH95O1zIEFP9TOjhy03yfxreF8gDi7+B"
+  region     = "us-west-2"
+}
+
 resource "kubernetes_ingress" "example_ingress" {
   metadata {
     name = "example-ingress"
@@ -24,10 +30,6 @@ resource "kubernetes_ingress" "example_ingress" {
           path = "/app2/*"
         }
       }
-    }
-    tls {
-      secret_name = "tls-secret"
-      aws_access_key_id="AKIAIO5FODNN7EXAMPLE"
     }
   }
 }
