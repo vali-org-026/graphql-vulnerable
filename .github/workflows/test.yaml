@@ -1,8 +1,29 @@
-name: Build & Test
+name: Build & Test & aqua
 
 on: [push, pull_request]
 
 jobs:
+  aqua:
+    name: Aqua scanner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Aqua scanner
+        uses: docker://aquasec/aqua-scanner
+        with:
+          args: trivy fs --scanners config,vuln,secret .
+          # To customize which severities to scan for, add the following flag: --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL
+          # To enable SAST scanning, add: --sast
+          # To enable reachability scanning, add: --reachability
+          # To enable npm/dotnet non-lock file scanning, add: --package-json / --dotnet-proj
+        env:
+          AQUA_KEY: 9VKxfYZ35YiHdFO6CbMysq
+          AQUA_SECRET: cLwXXSBawbrxbi9alFr3pUsAidglVesSQZA
+          GITHUB_TOKEN: ${{ github.token }}
+          TRIVY_RUN_AS_PLUGIN: 'aqua'
+          # For http/https proxy configuration add env vars: HTTP_PROXY/HTTPS_PROXY, CA-CRET (path to CA certificate)
   test:
     runs-on: ubuntu-20.04
     steps:
